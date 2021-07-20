@@ -3,8 +3,7 @@ import MainTable from './components/MainTable/index';
 
 function App() {
   return (
-    <div>
-      
+    <div>   
       <MainTable />
     </div>
   );
