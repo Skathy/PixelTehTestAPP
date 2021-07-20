@@ -1,9 +1,11 @@
 import './App.css';
+import MainTable from './components/MainTable/index';
 
 function App() {
   return (
     <div>
-      Hello, bitches!
+      
+      <MainTable />
     </div>
   );
 }

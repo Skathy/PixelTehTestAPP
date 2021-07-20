@@ -1,4 +1,5 @@
 import { GET_BEER } from './actions';
+
 const initState = {
     beers: []
 }
@@ -11,5 +12,6 @@ export default (state = initState, action) => {
                 beers: [action.payload]
             }
         }
+        default: return state
     }
 }
