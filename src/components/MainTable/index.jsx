@@ -119,7 +119,7 @@ const MainTable = () => {
         <div className='main-wrapper'>
             <div  className='per-page-nav'>
                 <div>Per page: </div>
-                <CustomRadio onChangeHandler={perPageSelector}/>    
+                <CustomRadio onChangeHandler={perPageSelector} value={perPage}/>    
             </div>
             <Tabs defaultActiveKey="1" onTabClick={key => clkHandler( key)}>
                 <TabPane tab="Pizza" key="1">
