@@ -96,6 +96,36 @@ const MainTable = () => {
         setPerPage(e.target.value)
     }
 
+    const sortByNameAsc = (a, b) => {
+        if (a.name > b.name) {
+            return 1
+        } else {
+            return -1
+        }
+    }
+    const sortByNameDesc = (a, b) => {
+        if (a.name > b.name) {
+            return -1
+        } else {
+            return 1
+        }
+    }
+    const sortByAbvAsc = (a, b) => {
+        if (a.abv > b.abv) {
+            return 1
+        } else {
+            return -1
+        }
+    }
+    const sortByAbvDesc = (a, b) => {
+        if (a.abv > b.abv) {
+            return -1
+        } else {
+            return 1
+        }
+    }
+
+
     useEffect(() => {
         setTimeout(() => {
             dispatch(getPizzaBeer(pizzaPage, perPage))
@@ -106,6 +136,7 @@ const MainTable = () => {
     useEffect(() => {
         dispatch(getPizzaBeer(pizzaPage, perPage))
         dispatch(getSteakBeer(steakPage, perPage))
+        dispatch(getBeers(page, perPage))
         setTimeout(() => {
             setLoading(false) 
         }, 1000)
@@ -130,6 +161,7 @@ const MainTable = () => {
             >
                 <TabPane tab="Pizza" key="1" disabled={loading}>
                     <BeerList 
+                        sort={sortByAbvDesc}
                         loading={loading}
                         beers={pizza}
                         perPage={perPage}
@@ -140,6 +172,7 @@ const MainTable = () => {
                 </TabPane>
                 <TabPane tab="Steak" key="2" disabled={loading}>
                     <BeerList
+                        sort={sortByAbvDesc}
                         loading={loading}
                         beers={steak}
                         perPage={perPage}
@@ -150,6 +183,7 @@ const MainTable = () => {
                 </TabPane>
                 <TabPane tab="ALL" key="3" disabled={loading}>
                     <BeerList
+                        sort={sortByAbvDesc}
                         loading={loading} 
                         beers={beers}
                         perPage={perPage}
