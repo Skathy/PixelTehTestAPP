@@ -5,6 +5,7 @@ import { BeerList } from '../BeerList'
 import { Tabs } from 'antd'
 import 'antd/dist/antd.css'
 import './style.scss'
+import { CustomRadio } from '../CustomRadio'
 
 const { TabPane } = Tabs;
 
@@ -22,12 +23,14 @@ const MainTable = () => {
     const incrementHandler = () => {
         switch(currentTab) {
             case 'PIZZA':
-                if (beers.length === perPage) {
+                if (pizza.length === perPage) {
                     setPizzaPage(prev => prev+1)
+                } else if (beers.length !== perPage) {
+                    setPizzaPage(prev => prev)
                 }
                 break
             case 'STEAK':
-                if (beers.length === perPage) {
+                if (steak.length === perPage) {
                     setSteakPage(prev => prev+1)
                 }
                 break
@@ -72,31 +75,42 @@ const MainTable = () => {
         }
     }
 
+    const perPageSelector = e => {
+        setPerPage(e.target.value)
+    }
 
     useEffect(() => {
         dispatch(getPizzaBeer(pizzaPage, perPage))
         dispatch(getSteakBeer(steakPage, perPage))
-    }, [steakPage, pizzaPage])
+    }, [steakPage, pizzaPage, perPage])
 
     useEffect(() => {
         dispatch(getBeers(page,perPage))
-    }, [page])
+    }, [page, perPage])
 
 
 
     return (
-        <div>
+        <div className='main-wrapper'>
+            <div  className='per-page-nav'>
+                <div>Per page: </div>
+                <CustomRadio onChangeHandler={perPageSelector}/>    
+            </div>
             <Tabs defaultActiveKey="1" onTabClick={key => clkHandler( key)}>
                 <TabPane tab="Pizza" key="1">
                     <BeerList 
                         beers={pizza}
+                        perPage={perPage}
+                        currentPage={pizzaPage}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
                 </TabPane>
                 <TabPane tab="Steak" key="2">
-                    <BeerList 
+                    <BeerList
                         beers={steak}
+                        perPage={perPage}
+                        currentPage={steakPage}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
@@ -104,11 +118,14 @@ const MainTable = () => {
                 <TabPane tab="ALL" key="3">
                     <BeerList 
                         beers={beers}
+                        perPage={perPage}
+                        currentPage={page}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
                 </TabPane>
             </Tabs>
+            
         </div>
     )
 }

@@ -10,16 +10,18 @@
             display: none;
         }
         li {
-            border-bottom: 1px solid red;
-            border-radius: 0.15rem;
+            border-bottom: 0.1rem solid #1890ff;
+            // border-radius: 0.15rem;
             padding: 0.5rem;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             &:hover {
-                background-color: aquamarine;
+                color: #40a9ff;
                 cursor: pointer;
             }
         }
     }
     .pagination-wrapper {
+        margin-top: 1rem;
         display: flex;
     }
 }
