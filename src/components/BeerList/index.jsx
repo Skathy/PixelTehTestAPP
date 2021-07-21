@@ -2,15 +2,15 @@ import React from 'react'
 import { CustomButton } from '../CustomButton/CustomButton'
 import './style.scss'
 
-export const BeerList = ({beers}) => {
+export const BeerList = ({beers, incrementHandler, decrementHandler}) => {
     return (
         <div className='beer-list-wrapper'>
             <div className='beer-list'>
-                {beers.length ? beers.map(item => <li>{item.name}</li>) : null}
+                {beers.length ? beers.map(item => <li key={item.id}>{item.name}</li>) : null}
             </div>
             <div className="pagination-wrapper">
-                <CustomButton text='PREV' className='prev-btn'/>
-                <CustomButton text='NEXT' className='next-btn'/>
+                <CustomButton text='PREV' className='prev-btn' clickHandler={decrementHandler}/>
+                <CustomButton text='NEXT' className='next-btn' clickHandler={incrementHandler}/>
             </div>
         </div>
     )
