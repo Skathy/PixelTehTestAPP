@@ -1,7 +1,9 @@
 .beer-list-wrapper {
     .beer-list {
-        max-width: 13.75rem;
-        max-height: 13.75rem;
+        min-width: 18.75rem;
+        max-width: 18.75rem;
+        max-height: 12.5rem;
+        min-height: 12.5rem;
         text-align: center;
         overflow: scroll;
         scroll-behavior: smooth;
