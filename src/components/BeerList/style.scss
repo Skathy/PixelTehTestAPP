@@ -8,12 +8,14 @@
         overflow: scroll;
         scroll-behavior: smooth;
         scrollbar-width: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         &::-webkit-scrollbar {
             display: none;
         }
         li {
             border-bottom: 0.1rem solid #1890ff;
-            // border-radius: 0.15rem;
             padding: 0.5rem;
             transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             &:hover {

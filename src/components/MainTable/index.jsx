@@ -2,10 +2,10 @@ import {React, useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {getBeers, getPizzaBeer, getSteakBeer} from '../../store/beers/actions'
 import { BeerList } from '../BeerList'
+import { CustomRadio } from '../CustomRadio'
 import { Tabs } from 'antd'
 import 'antd/dist/antd.css'
 import './style.scss'
-import { CustomRadio } from '../CustomRadio'
 
 const { TabPane } = Tabs;
 
@@ -16,17 +16,20 @@ const MainTable = () => {
     const [pizzaPage, setPizzaPage] = useState(1)
     const [steakPage, setSteakPage] = useState(1)
     const [perPage, setPerPage] = useState(5)
-    const [currentTab, setCurrentTab] = useState('')
+    const [currentTab, setCurrentTab] = useState('PIZZA')
+    const [loading, setLoading] = useState(true)
 
     const { pizza, steak, beers } = useSelector(state => state.beerReducer)
 
     const incrementHandler = () => {
+        setLoading(true)
         switch(currentTab) {
             case 'PIZZA':
                 if (pizza.length === perPage) {
                     setPizzaPage(prev => prev+1)
                 } else if (beers.length !== perPage) {
                     setPizzaPage(prev => prev)
+                    setLoading(false)
                 }
                 break
             case 'STEAK':
@@ -42,20 +45,34 @@ const MainTable = () => {
         }
     }
     const clkHandler = (key) => {
+        setLoading(true)
         switch (+key) {
             case 1: 
-                setCurrentTab('PIZZA');
+                setTimeout(() => {  
+                        setCurrentTab('PIZZA')
+                        dispatch(getPizzaBeer(pizzaPage, perPage))
+                        setLoading(false)
+                    }, 1000)
                 break;
             case 2: 
-                setCurrentTab('STEAK');
+                setTimeout(() => {  
+                    setCurrentTab('STEAK')
+                    dispatch(getSteakBeer(steakPage, perPage))
+                    setLoading(false)
+                }, 1000)
                 break;
             case 3:
-                setCurrentTab('ALL');
+                setTimeout(() => {  
+                    setCurrentTab('ALL')
+                    dispatch(getBeers(page, perPage))
+                    setLoading(false)
+                }, 1000)
                 break;
         }   
     }
 
     const decrementHandler = () => {
+        setLoading(true)
         switch(currentTab) {
             case 'PIZZA':
                 if (pizzaPage > 1) {
@@ -76,17 +93,25 @@ const MainTable = () => {
     }
 
     const perPageSelector = e => {
+        setLoading(true)
         setPerPage(e.target.value)
     }
 
     useEffect(() => {
-        dispatch(getPizzaBeer(pizzaPage, perPage))
-        dispatch(getSteakBeer(steakPage, perPage))
-    }, [steakPage, pizzaPage, perPage])
+        setTimeout(() => {
+            dispatch(getPizzaBeer(pizzaPage, perPage))
+            setLoading(false)
+        }, 1000)
+    }, [])
 
     useEffect(() => {
-        dispatch(getBeers(page,perPage))
-    }, [page, perPage])
+        setTimeout(() => {
+            dispatch(getPizzaBeer(pizzaPage, perPage))
+            dispatch(getSteakBeer(steakPage, perPage))
+            setLoading(false) 
+        }, 1000)
+    }, [pizzaPage, steakPage, page, perPage])
+
 
 
 
@@ -99,6 +124,7 @@ const MainTable = () => {
             <Tabs defaultActiveKey="1" onTabClick={key => clkHandler( key)}>
                 <TabPane tab="Pizza" key="1">
                     <BeerList 
+                        loading={loading}
                         beers={pizza}
                         perPage={perPage}
                         currentPage={pizzaPage}
@@ -108,6 +134,7 @@ const MainTable = () => {
                 </TabPane>
                 <TabPane tab="Steak" key="2">
                     <BeerList
+                        loading={loading}
                         beers={steak}
                         perPage={perPage}
                         currentPage={steakPage}
@@ -116,7 +143,8 @@ const MainTable = () => {
                         />
                 </TabPane>
                 <TabPane tab="ALL" key="3">
-                    <BeerList 
+                    <BeerList
+                        loading={loading} 
                         beers={beers}
                         perPage={perPage}
                         currentPage={page}
