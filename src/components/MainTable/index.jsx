@@ -1,6 +1,7 @@
 import {React, useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {getBeers, getPizzaBeer, getSteakBeer} from '../../store/beers/actions'
+import { BeerList } from '../BeerList'
 import { Tabs } from 'antd'
 import 'antd/dist/antd.css'
 import './style.scss'
@@ -23,22 +24,13 @@ const MainTable = () => {
         <div>
             <Tabs defaultActiveKey="1" >
                 <TabPane tab="Pizza" key="1">
-                    <div className='beer-list'>
-                        {pizza.length ? pizza
-                            .map(beer => <li key={beer.id}>{beer.name}</li>) : null}
-                    </div>
+                    <BeerList beers={pizza}/>
                 </TabPane>
                 <TabPane tab="Steak" key="2">
-                    <div className='beer-list'>
-                        {steak.length ? steak
-                            .map(beer => <li key={beer.id}>{beer.name}</li>) : null}
-                    </div>
+                    <BeerList beers={steak}/>
                 </TabPane>
                 <TabPane tab="ALL" key="3">
-                    <div className='beer-list'>
-                        {beers.length ? beers
-                            .map(beer => <li key={beer.id}>{beer.name}</li>) : null}
-                    </div>
+                    <BeerList beers={beers}/>
                 </TabPane>
             </Tabs>
         </div>
