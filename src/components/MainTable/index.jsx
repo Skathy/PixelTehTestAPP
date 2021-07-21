@@ -29,7 +29,6 @@ const MainTable = () => {
                     setPizzaPage(prev => prev+1)
                 } else if (beers.length !== perPage) {
                     setPizzaPage(prev => prev)
-                    setLoading(false)
                 }
                 break
             case 'STEAK':
@@ -48,23 +47,23 @@ const MainTable = () => {
         setLoading(true)
         switch (+key) {
             case 1: 
+            setCurrentTab('PIZZA')
+            dispatch(getPizzaBeer(pizzaPage, perPage))
                 setTimeout(() => {  
-                        setCurrentTab('PIZZA')
-                        dispatch(getPizzaBeer(pizzaPage, perPage))
                         setLoading(false)
                     }, 1000)
                 break;
             case 2: 
+            setCurrentTab('STEAK')
+            dispatch(getSteakBeer(steakPage, perPage))
                 setTimeout(() => {  
-                    setCurrentTab('STEAK')
-                    dispatch(getSteakBeer(steakPage, perPage))
                     setLoading(false)
                 }, 1000)
                 break;
             case 3:
+                setCurrentTab('ALL')
+                dispatch(getBeers(page, perPage))
                 setTimeout(() => {  
-                    setCurrentTab('ALL')
-                    dispatch(getBeers(page, perPage))
                     setLoading(false)
                 }, 1000)
                 break;
@@ -105,9 +104,9 @@ const MainTable = () => {
     }, [])
 
     useEffect(() => {
+        dispatch(getPizzaBeer(pizzaPage, perPage))
+        dispatch(getSteakBeer(steakPage, perPage))
         setTimeout(() => {
-            dispatch(getPizzaBeer(pizzaPage, perPage))
-            dispatch(getSteakBeer(steakPage, perPage))
             setLoading(false) 
         }, 1000)
     }, [pizzaPage, steakPage, page, perPage])
