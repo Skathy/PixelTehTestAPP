@@ -2,8 +2,8 @@
     .beer-list {
         min-width: 18.75rem;
         max-width: 18.75rem;
-        max-height: 12.5rem;
-        min-height: 12.5rem;
+        max-height: 20.5rem;
+        min-height: 20.5rem;
         text-align: center;
         overflow: scroll;
         scroll-behavior: smooth;
@@ -13,7 +13,11 @@
         &::-webkit-scrollbar {
             display: none;
         }
-        li {
+        img {
+            height: 3rem;
+            width: .9rem;
+        }
+        .beer {
             border-bottom: .1rem solid #d9d9d9;
             padding: 0.5rem;
             transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -22,6 +26,14 @@
                 color: #40a9ff;
                 cursor: pointer;
             }
+            .beer-desc {
+                display: flex;
+                flex-direction: column;
+                :first-child {
+                    font-weight: 600 ;
+                }
+            }
+
         }
     }
     .pagination-wrapper {

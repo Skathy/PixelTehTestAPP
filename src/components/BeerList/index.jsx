@@ -7,20 +7,29 @@ export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, cu
     return (
         <div className='beer-list-wrapper'>
             <div className='beer-list'>
-                {loading ? <Loader /> : beers.map(item => <li key={item.id}>{item.name}</li>)}
+                {loading ? <Loader /> : beers.map(item => (
+                <div className='beer' key={item.id}>
+                    <div>
+                        <img src={item.image_url} alt={item.id} />
+                    </div>
+                    <div className='beer-desc'>
+                        <span>{item.name}</span>
+                        <span>ABV: {item.abv}</span>
+                    </div>
+                </div>))}
             </div>
             <div className="pagination-wrapper">
                 <CustomButton 
                     text='PREV' 
                     className='prev-btn' 
                     clickHandler={decrementHandler} 
-                    disabled={currentPage === 1 ? true : false} 
+                    disabled={currentPage === 1 ? true : loading ? true : false} 
                 />
                 <CustomButton 
                     text='NEXT' 
                     className='next-btn' 
                     clickHandler={incrementHandler} 
-                    disabled={beers.length !== perPage ? true : false} 
+                    disabled={beers.length !== perPage ? true : loading ? true : false} 
                 />
             </div>
         </div>

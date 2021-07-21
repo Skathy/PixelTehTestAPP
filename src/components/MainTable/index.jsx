@@ -118,10 +118,17 @@ const MainTable = () => {
         <div className='main-wrapper'>
             <div  className='per-page-nav'>
                 <div>Per page: </div>
-                <CustomRadio onChangeHandler={perPageSelector} value={perPage}/>    
+                <CustomRadio 
+                    onChangeHandler={perPageSelector} 
+                    value={perPage} 
+                    disabled={loading}
+                />    
             </div>
-            <Tabs defaultActiveKey="1" onTabClick={key => clkHandler( key)}>
-                <TabPane tab="Pizza" key="1">
+            <Tabs 
+                defaultActiveKey="1" 
+                onTabClick={key => clkHandler( key)}
+            >
+                <TabPane tab="Pizza" key="1" disabled={loading}>
                     <BeerList 
                         loading={loading}
                         beers={pizza}
@@ -131,7 +138,7 @@ const MainTable = () => {
                         decrementHandler={decrementHandler}
                         />
                 </TabPane>
-                <TabPane tab="Steak" key="2">
+                <TabPane tab="Steak" key="2" disabled={loading}>
                     <BeerList
                         loading={loading}
                         beers={steak}
@@ -141,7 +148,7 @@ const MainTable = () => {
                         decrementHandler={decrementHandler}
                         />
                 </TabPane>
-                <TabPane tab="ALL" key="3">
+                <TabPane tab="ALL" key="3" disabled={loading}>
                     <BeerList
                         loading={loading} 
                         beers={beers}
@@ -152,7 +159,6 @@ const MainTable = () => {
                         />
                 </TabPane>
             </Tabs>
-            
         </div>
     )
 }
