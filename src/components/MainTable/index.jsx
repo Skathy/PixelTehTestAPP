@@ -7,7 +7,7 @@ import { CustomRadio } from '../CustomRadio'
 import { Tabs } from 'antd'
 import 'antd/dist/antd.css'
 import './style.scss'
-import CustomSelector from './../CustomeSelecter/index';
+import CustomSelector from '../CustomSelectоr/index';
 
 const { TabPane } = Tabs;
 
@@ -15,76 +15,59 @@ const MainTable = () => {
     const dispatch = useDispatch()
 
     const [page, setPage] = useState(1)
-    const [pizzaPage, setPizzaPage] = useState(1)
-    const [steakPage, setSteakPage] = useState(1)
     const [perPage, setPerPage] = useState(5)
     const [currentTab, setCurrentTab] = useState('PIZZA')
     const [sortBy, setSortBy] = useState('ByNameAsc')
 
     const { pizza, steak, beers, isLoading } = useSelector(state => state.beerReducer)
 
-    const tabs = [
-        {tab: 'PIZZA'}, 
-        {tab: 'STEAK'}, 
-        {tab: 'ALL'}
-    ]
+
+    const displayBeer = (pg, perPG) => {
+        switch(currentTab) {
+            case 'PIZZA':
+                dispatch(getPizzaBeer(pg, perPG))
+                break
+            case 'STEAK':
+                dispatch(getSteakBeer(pg, perPG))
+                break
+            case 'ALL':
+                dispatch(getBeers(pg, perPG))
+                break
+            default: 
+                dispatch(getPizzaBeer(pg, perPG))
+        }   
+    }
 
     const incrementHandler = () => {
         setPage(prev => prev+1)
-        switch(currentTab) {
-            case 'PIZZA':
-                dispatch(getPizzaBeer(page, perPage))
-                break
-            case 'STEAK':
-                dispatch(getSteakBeer(page, perPage))
-                break
-            case 'ALL': 
-                dispatch(getBeers(page, perPage))
-                break
-            default: 
-                setPage(prev => prev)
-        }
     }
     
     const clkHandler = (key) => {
         switch (+key) {
             case 1: 
                 setCurrentTab('PIZZA')
+                setPage(1)
                 dispatch(getPizzaBeer(page, perPage))
                 break;
             case 2: 
                 setCurrentTab('STEAK')
+                setPage(1)
                 dispatch(getSteakBeer(page, perPage))
                 break;
             case 3:
                 setCurrentTab('ALL')
+                setPage(1)
                 dispatch(getBeers(page, perPage))
                 break;
             default: 
                 setCurrentTab('PIZZA')
+                setPage(1)
                 dispatch(getPizzaBeer(page, perPage))
         }   
     }
 
     const decrementHandler = () => {
         setPage(prev => prev - 1)
-        // switch(currentTab) {
-        //     case 'PIZZA':
-        //         if (pizzaPage > 1) {
-        //             setPage(prev => prev-1)
-        //         }
-        //         break
-        //     case 'STEAK':
-        //         if (steakPage > 1) {
-        //             setSteakPage(prev => prev-1)
-        //         }
-        //         break
-        //     case 'ALL': 
-        //         if (page > 1) {
-        //             setPage(prev => prev-1)
-        //         }
-        //         break
-        // }
     }
 
     const perPageSelector = e => {
@@ -97,10 +80,8 @@ const MainTable = () => {
 
 
     useEffect(() => {
-        dispatch(getPizzaBeer(page, perPage))
-        dispatch(getBeers(page, perPage))
-        dispatch(getSteakBeer(page, perPage))
-    }, [page])
+        displayBeer(page, perPage)
+    }, [page, perPage])
 
 
 
