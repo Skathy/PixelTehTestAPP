@@ -4,13 +4,13 @@ We encourage you to use any ui-framework (Material-ui, bootstrap, chakra-ui, wha
 
 User requirements
 ● As a user I want the application to show me beers using three different views (tabs):
-● beers that pair with pizza
-● beers that pair with steak
-● all available beers
+● beers that pair with pizza --- Checked!
+● beers that pair with steak --- Checked!
+● all available beers --- Checked!
 
 ● As a user I want to easily navigate around the app and:
-● For each beer in a view see the name, a picture and the abv
-● Transition between views/tabs
+● For each beer in a view see the name, a picture and the abv --- Checked!
+● Transition between views/tabs --- Semi-check!
 
 ● As a user I want to select a beer and see the following information:
 ● picture
@@ -21,7 +21,7 @@ User requirements
 ● food_pairing (collapsed if too long)
 
 ● As a user I want to sort the beers in each view/tab between:
-● abv_ascending
-● abv_descending,
-● name_ascending,
-● name_descending
+● abv_ascending --- Checked!
+● abv_descending --- Checked!
+● name_ascending --- Checked!
+● name_descending --- Checked!
