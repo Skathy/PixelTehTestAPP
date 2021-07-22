@@ -6,6 +6,7 @@ import { CustomRadio } from '../CustomRadio'
 import { Tabs } from 'antd'
 import 'antd/dist/antd.css'
 import './style.scss'
+import CustomSelector from './../CustomeSelecter/index';
 
 const { TabPane } = Tabs;
 
@@ -18,6 +19,7 @@ const MainTable = () => {
     const [perPage, setPerPage] = useState(5)
     const [currentTab, setCurrentTab] = useState('PIZZA')
     const [loading, setLoading] = useState(true)
+    const [sortBy, setSortBy] = useState('ByNameAsc')
 
     const { pizza, steak, beers } = useSelector(state => state.beerReducer)
 
@@ -43,6 +45,7 @@ const MainTable = () => {
                 break
         }
     }
+    
     const clkHandler = (key) => {
         setLoading(true)
         switch (+key) {
@@ -125,22 +128,45 @@ const MainTable = () => {
         }
     }
 
+    const sortingBy = value => {
+        setSortBy(value)
+    }
 
-    useEffect(() => {
-        setTimeout(() => {
-            dispatch(getPizzaBeer(pizzaPage, perPage))
-            setLoading(false)
-        }, 1000)
-    }, [])
+    const sorting = sortBy => {
+        switch(sortBy) {
+            case 'ByNameAsc':
+                return sortByNameAsc
+            case 'ByNameDesc':
+                return sortByNameDesc
+            case 'ByAbvAsc':
+                return sortByAbvAsc
+            case 'ByAbvDesc':
+                return sortByAbvDesc
+            default: return sortByNameAsc
+        }
+    }
 
     useEffect(() => {
         dispatch(getPizzaBeer(pizzaPage, perPage))
-        dispatch(getSteakBeer(steakPage, perPage))
+        setTimeout(() => {
+            setLoading(false) 
+        }, 1000)
+    }, [pizzaPage, perPage])
+
+    useEffect(() => {
         dispatch(getBeers(page, perPage))
         setTimeout(() => {
             setLoading(false) 
         }, 1000)
-    }, [pizzaPage, steakPage, page, perPage])
+    }, [page, perPage])
+
+    useEffect(() => {
+        dispatch(getSteakBeer(steakPage, perPage))
+        setTimeout(() => {
+            setLoading(false) 
+        }, 1000)
+    }, [steakPage ,perPage])
+ 
 
 
 
@@ -153,7 +179,12 @@ const MainTable = () => {
                     onChangeHandler={perPageSelector} 
                     value={perPage} 
                     disabled={loading}
-                />    
+                />
+                <div>Sort by:</div>
+                <CustomSelector
+                    disabled={loading} 
+                    sortingBy={sortingBy}
+                />   
             </div>
             <Tabs 
                 defaultActiveKey="1" 
@@ -161,7 +192,8 @@ const MainTable = () => {
             >
                 <TabPane tab="Pizza" key="1" disabled={loading}>
                     <BeerList 
-                        sort={sortByAbvDesc}
+                        sort={sorting}
+                        sortParam={sortBy}
                         loading={loading}
                         beers={pizza}
                         perPage={perPage}
@@ -172,7 +204,8 @@ const MainTable = () => {
                 </TabPane>
                 <TabPane tab="Steak" key="2" disabled={loading}>
                     <BeerList
-                        sort={sortByAbvDesc}
+                        sort={sorting}
+                        sortParam={sortBy}
                         loading={loading}
                         beers={steak}
                         perPage={perPage}
@@ -183,7 +216,8 @@ const MainTable = () => {
                 </TabPane>
                 <TabPane tab="ALL" key="3" disabled={loading}>
                     <BeerList
-                        sort={sortByAbvDesc}
+                        sort={sorting}
+                        sortParam={sortBy}
                         loading={loading} 
                         beers={beers}
                         perPage={perPage}
