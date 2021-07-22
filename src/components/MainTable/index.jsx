@@ -18,13 +18,11 @@ const MainTable = () => {
     const [steakPage, setSteakPage] = useState(1)
     const [perPage, setPerPage] = useState(5)
     const [currentTab, setCurrentTab] = useState('PIZZA')
-    const [loading, setLoading] = useState(true)
     const [sortBy, setSortBy] = useState('ByNameAsc')
 
-    const { pizza, steak, beers } = useSelector(state => state.beerReducer)
+    const { pizza, steak, beers, isLoading } = useSelector(state => state.beerReducer)
 
     const incrementHandler = () => {
-        setLoading(true)
         switch(currentTab) {
             case 'PIZZA':
                 if (pizza.length === perPage) {
@@ -47,34 +45,23 @@ const MainTable = () => {
     }
     
     const clkHandler = (key) => {
-        setLoading(true)
         switch (+key) {
             case 1: 
-            setCurrentTab('PIZZA')
-            dispatch(getPizzaBeer(pizzaPage, perPage))
-                setTimeout(() => {  
-                        setLoading(false)
-                    }, 1000)
+                setCurrentTab('PIZZA')
+                dispatch(getPizzaBeer(pizzaPage, perPage))
                 break;
             case 2: 
-            setCurrentTab('STEAK')
-            dispatch(getSteakBeer(steakPage, perPage))
-                setTimeout(() => {  
-                    setLoading(false)
-                }, 1000)
+                setCurrentTab('STEAK')
+                dispatch(getSteakBeer(steakPage, perPage))
                 break;
             case 3:
                 setCurrentTab('ALL')
                 dispatch(getBeers(page, perPage))
-                setTimeout(() => {  
-                    setLoading(false)
-                }, 1000)
                 break;
         }   
     }
 
     const decrementHandler = () => {
-        setLoading(true)
         switch(currentTab) {
             case 'PIZZA':
                 if (pizzaPage > 1) {
@@ -95,7 +82,6 @@ const MainTable = () => {
     }
 
     const perPageSelector = e => {
-        setLoading(true)
         setPerPage(e.target.value)
     }
 
@@ -149,21 +135,18 @@ const MainTable = () => {
     useEffect(() => {
         dispatch(getPizzaBeer(pizzaPage, perPage))
         setTimeout(() => {
-            setLoading(false) 
         }, 1000)
     }, [pizzaPage, perPage])
 
     useEffect(() => {
         dispatch(getBeers(page, perPage))
         setTimeout(() => {
-            setLoading(false) 
         }, 1000)
     }, [page, perPage])
 
     useEffect(() => {
         dispatch(getSteakBeer(steakPage, perPage))
         setTimeout(() => {
-            setLoading(false) 
         }, 1000)
     }, [steakPage ,perPage])
  
@@ -178,11 +161,11 @@ const MainTable = () => {
                 <CustomRadio 
                     onChangeHandler={perPageSelector} 
                     value={perPage} 
-                    disabled={loading}
+                    disabled={isLoading}
                 />
                 <div>Sort by:</div>
                 <CustomSelector
-                    disabled={loading} 
+                    disabled={isLoading} 
                     sortingBy={sortingBy}
                 />   
             </div>
@@ -190,11 +173,11 @@ const MainTable = () => {
                 defaultActiveKey="1" 
                 onTabClick={key => clkHandler( key)}
             >
-                <TabPane tab="Pizza" key="1" disabled={loading}>
+                <TabPane tab="Pizza" key="1" disabled={isLoading}>
                     <BeerList 
                         sort={sorting}
                         sortParam={sortBy}
-                        loading={loading}
+                        loading={isLoading}
                         beers={pizza}
                         perPage={perPage}
                         currentPage={pizzaPage}
@@ -202,11 +185,11 @@ const MainTable = () => {
                         decrementHandler={decrementHandler}
                         />
                 </TabPane>
-                <TabPane tab="Steak" key="2" disabled={loading}>
+                <TabPane tab="Steak" key="2" disabled={isLoading}>
                     <BeerList
                         sort={sorting}
                         sortParam={sortBy}
-                        loading={loading}
+                        loading={isLoading}
                         beers={steak}
                         perPage={perPage}
                         currentPage={steakPage}
@@ -214,11 +197,11 @@ const MainTable = () => {
                         decrementHandler={decrementHandler}
                         />
                 </TabPane>
-                <TabPane tab="ALL" key="3" disabled={loading}>
+                <TabPane tab="ALL" key="3" disabled={isLoading}>
                     <BeerList
                         sort={sorting}
                         sortParam={sortBy}
-                        loading={loading} 
+                        loading={isLoading} 
                         beers={beers}
                         perPage={perPage}
                         currentPage={page}
