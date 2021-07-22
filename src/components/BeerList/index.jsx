@@ -3,12 +3,12 @@ import { CustomButton } from '../CustomButton/CustomButton'
 import { Loader }  from '../Loader/Loader'
 import './style.scss'
 
-export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, currentPage, loading, sort, sortParam}) => {
+export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, currentPage, loading, sorting, sortParam}) => {
     return (
         <div className='beer-list-wrapper'>
             <div className='beer-list'>
                 {loading ? <Loader /> : beers
-                    .sort(sort(sortParam))
+                    .sort(sorting(sortParam))
                     .map(item => (
                 <div className='beer' key={item.id}>
                     <div>

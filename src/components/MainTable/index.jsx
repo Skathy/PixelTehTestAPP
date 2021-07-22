@@ -1,6 +1,7 @@
 import {React, useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {getBeers, getPizzaBeer, getSteakBeer} from '../../store/beers/actions'
+import { sorting } from './sorting'
 import { BeerList } from '../BeerList'
 import { CustomRadio } from '../CustomRadio'
 import { Tabs } from 'antd'
@@ -22,25 +23,26 @@ const MainTable = () => {
 
     const { pizza, steak, beers, isLoading } = useSelector(state => state.beerReducer)
 
+    const tabs = [
+        {tab: 'PIZZA'}, 
+        {tab: 'STEAK'}, 
+        {tab: 'ALL'}
+    ]
+
     const incrementHandler = () => {
+        setPage(prev => prev+1)
         switch(currentTab) {
             case 'PIZZA':
-                if (pizza.length === perPage) {
-                    setPizzaPage(prev => prev+1)
-                } else if (beers.length !== perPage) {
-                    setPizzaPage(prev => prev)
-                }
+                dispatch(getPizzaBeer(page, perPage))
                 break
             case 'STEAK':
-                if (steak.length === perPage) {
-                    setSteakPage(prev => prev+1)
-                }
+                dispatch(getSteakBeer(page, perPage))
                 break
             case 'ALL': 
-                if (beers.length === perPage) {
-                    setPage(prev => prev+1)
-                }
+                dispatch(getBeers(page, perPage))
                 break
+            default: 
+                setPage(prev => prev)
         }
     }
     
@@ -48,108 +50,58 @@ const MainTable = () => {
         switch (+key) {
             case 1: 
                 setCurrentTab('PIZZA')
-                dispatch(getPizzaBeer(pizzaPage, perPage))
+                dispatch(getPizzaBeer(page, perPage))
                 break;
             case 2: 
                 setCurrentTab('STEAK')
-                dispatch(getSteakBeer(steakPage, perPage))
+                dispatch(getSteakBeer(page, perPage))
                 break;
             case 3:
                 setCurrentTab('ALL')
                 dispatch(getBeers(page, perPage))
                 break;
+            default: 
+                setCurrentTab('PIZZA')
+                dispatch(getPizzaBeer(page, perPage))
         }   
     }
 
     const decrementHandler = () => {
-        switch(currentTab) {
-            case 'PIZZA':
-                if (pizzaPage > 1) {
-                    setPizzaPage(prev => prev-1)
-                }
-                break
-            case 'STEAK':
-                if (steakPage > 1) {
-                    setSteakPage(prev => prev-1)
-                }
-                break
-            case 'ALL': 
-                if (page > 1) {
-                    setPage(prev => prev-1)
-                }
-                break
-        }
+        setPage(prev => prev - 1)
+        // switch(currentTab) {
+        //     case 'PIZZA':
+        //         if (pizzaPage > 1) {
+        //             setPage(prev => prev-1)
+        //         }
+        //         break
+        //     case 'STEAK':
+        //         if (steakPage > 1) {
+        //             setSteakPage(prev => prev-1)
+        //         }
+        //         break
+        //     case 'ALL': 
+        //         if (page > 1) {
+        //             setPage(prev => prev-1)
+        //         }
+        //         break
+        // }
     }
 
     const perPageSelector = e => {
         setPerPage(e.target.value)
     }
 
-    const sortByNameAsc = (a, b) => {
-        if (a.name > b.name) {
-            return 1
-        } else {
-            return -1
-        }
-    }
-    const sortByNameDesc = (a, b) => {
-        if (a.name > b.name) {
-            return -1
-        } else {
-            return 1
-        }
-    }
-    const sortByAbvAsc = (a, b) => {
-        if (a.abv > b.abv) {
-            return 1
-        } else {
-            return -1
-        }
-    }
-    const sortByAbvDesc = (a, b) => {
-        if (a.abv > b.abv) {
-            return -1
-        } else {
-            return 1
-        }
-    }
-
     const sortingBy = value => {
         setSortBy(value)
     }
 
-    const sorting = sortBy => {
-        switch(sortBy) {
-            case 'ByNameAsc':
-                return sortByNameAsc
-            case 'ByNameDesc':
-                return sortByNameDesc
-            case 'ByAbvAsc':
-                return sortByAbvAsc
-            case 'ByAbvDesc':
-                return sortByAbvDesc
-            default: return sortByNameAsc
-        }
-    }
 
     useEffect(() => {
-        dispatch(getPizzaBeer(pizzaPage, perPage))
-        setTimeout(() => {
-        }, 1000)
-    }, [pizzaPage, perPage])
-
-    useEffect(() => {
+        dispatch(getPizzaBeer(page, perPage))
         dispatch(getBeers(page, perPage))
-        setTimeout(() => {
-        }, 1000)
-    }, [page, perPage])
+        dispatch(getSteakBeer(page, perPage))
+    }, [page])
 
-    useEffect(() => {
-        dispatch(getSteakBeer(steakPage, perPage))
-        setTimeout(() => {
-        }, 1000)
-    }, [steakPage ,perPage])
- 
 
 
 
@@ -175,31 +127,31 @@ const MainTable = () => {
             >
                 <TabPane tab="Pizza" key="1" disabled={isLoading}>
                     <BeerList 
-                        sort={sorting}
+                        sorting={sorting}
                         sortParam={sortBy}
                         loading={isLoading}
                         beers={pizza}
                         perPage={perPage}
-                        currentPage={pizzaPage}
+                        currentPage={page}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
                 </TabPane>
                 <TabPane tab="Steak" key="2" disabled={isLoading}>
                     <BeerList
-                        sort={sorting}
+                        sorting={sorting}
                         sortParam={sortBy}
                         loading={isLoading}
                         beers={steak}
                         perPage={perPage}
-                        currentPage={steakPage}
+                        currentPage={page}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
                 </TabPane>
                 <TabPane tab="ALL" key="3" disabled={isLoading}>
                     <BeerList
-                        sort={sorting}
+                        sorting={sorting}
                         sortParam={sortBy}
                         loading={isLoading} 
                         beers={beers}
