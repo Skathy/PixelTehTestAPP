@@ -4,9 +4,9 @@ import {getBeers, getPizzaBeer, getSteakBeer} from '../../store/beers/actions'
 import { sorting } from './sorting'
 import { CustomRadio } from '../CustomRadio'
 import { CustomSelect } from '../CustomSelect';
+import { TabList } from '../TabList'
 import 'antd/dist/antd.css'
 import './style.scss'
-import { TabList } from '../TabList'
 
 
 const MainTable = () => {
@@ -25,7 +25,7 @@ const MainTable = () => {
 
     const displayBeer = (pg, perPG) => {
         switch(currentTab) {
-            // I`M USING SWITCH JUST CAUSE DIDN`T GET HOW TO USE DYNAMIC ACTION NAMES.
+            // I`M USING SWITCH JUST CAUSE DIDN'T GET HOW TO USE DYNAMIC ACTION NAMES.
             case 'PIZZA':
                 dispatch(getPizzaBeer(pg[currentTab], perPG[currentTab]))
                 break
@@ -98,6 +98,10 @@ const MainTable = () => {
         setSortBy(value)
     }
 
+    const beerID = id => {
+        return `/${id}`
+    }
+
 
     useEffect(() => {
         displayBeer(page, perPage)
@@ -120,6 +124,7 @@ const MainTable = () => {
                 />   
             </div>
             <TabList
+                setPath={beerID}
                 clkHandler={clkHandler}
                 sorting={sorting}
                 sortBy={sortBy}

@@ -1,9 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { CustomButton } from '../CustomButton/CustomButton'
 import { Loader }  from '../Loader/Loader'
 import './style.scss'
 
-export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, currentPage, loading, sorting, sortParam}) => {
+export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, currentPage, loading, sorting, sortParam, path}) => {
     return (
         <div className='beer-list-wrapper'>
             <div className='beer-list'>
@@ -11,15 +12,17 @@ export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, cu
                 {loading ? <Loader /> : beers.length ? beers
                     .sort(sorting(sortParam)) 
                     .map(item => (
-                <div className='beer' key={item.id}>
-                    <div>
-                        <img src={item.image_url} alt={item.id} />
-                    </div>
-                    <div className='beer-desc'>
-                        <span>{item.name}</span>
-                        <span>ABV: {item.abv}</span>
-                    </div>
-                </div>)) : null}
+                        <Link to={() => path(item.id)}>
+                            <div className='beer' key={item.id}>
+                                <div>
+                                    <img src={item.image_url} alt={item.id} />
+                                </div>
+                                <div className='beer-desc'>
+                                    <span>{item.name}</span>
+                                    <span>ABV: {item.abv}</span>
+                                </div>
+                            </div>
+                        </Link>)) : null}
             </div>
             {/* PAGINATION SECTION */}
             <div className="pagination-wrapper">

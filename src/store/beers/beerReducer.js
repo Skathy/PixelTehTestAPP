@@ -1,9 +1,10 @@
-import { GET_PIZZA_BEER, GET_STEAK_BEER, GET_BEERS, SET_LOADING } from './actions';
+import { GET_PIZZA_BEER, GET_STEAK_BEER, GET_BEERS, SET_LOADING, GET_SINGLE_BEER } from './actions';
 
 const initState = {
     pizza: [],
     steak: [],
     beers: [],
+    beer: {},
     isLoading: false
 }
 
@@ -31,6 +32,12 @@ export default (state = initState, action) => {
             return {
                 ...state,
                 isLoading: action.payload
+            }
+        }
+        case GET_SINGLE_BEER: {
+            return {
+                ...state,
+                beer: action.payload
             }
         }
         default: return state
