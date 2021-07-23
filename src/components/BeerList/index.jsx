@@ -7,8 +7,9 @@ export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, cu
     return (
         <div className='beer-list-wrapper'>
             <div className='beer-list'>
+                {/* RENDERING LIST OF BEERS IF LOADING FALSE OR LENGTH OF BEERS ARR > 0 */}
                 {loading ? <Loader /> : beers.length ? beers
-                    .sort(sorting(sortParam))
+                    .sort(sorting(sortParam)) 
                     .map(item => (
                 <div className='beer' key={item.id}>
                     <div>
@@ -20,17 +21,18 @@ export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, cu
                     </div>
                 </div>)) : null}
             </div>
+            {/* PAGINATION SECTION */}
             <div className="pagination-wrapper">
                 <CustomButton 
                     text='PREV' 
                     className='prev-btn' 
-                    clickHandler={decrementHandler} 
+                    clickHandler={decrementHandler}
                     disabled={currentPage === 1 ? true : loading ? true : false} 
                 />
                 <CustomButton 
                     text='NEXT' 
                     className='next-btn' 
-                    clickHandler={incrementHandler} 
+                    clickHandler={incrementHandler}
                     disabled={beers.length !== perPage ? true : loading ? true : false} 
                 />
             </div>

@@ -4,18 +4,19 @@ import {getBeers, getPizzaBeer, getSteakBeer} from '../../store/beers/actions'
 import { sorting } from './sorting'
 import { BeerList } from '../BeerList'
 import { CustomRadio } from '../CustomRadio'
+import { CustomSelect } from '../CustomSelect';
 import { Tabs } from 'antd'
 import 'antd/dist/antd.css'
 import './style.scss'
-import CustomSelector from '../CustomSelectоr/index';
 
 const { TabPane } = Tabs;
 
 const MainTable = () => {
     const dispatch = useDispatch()
-
+    // SETTING PAGE FOR EACH TAB
     const [page, setPage] = useState({'PIZZA': 1, 'STEAK': 1, 'ALL': 1})
-    const [perPage, setPerPage] = useState(5)
+    // SETTING PER PAGE RENDER FOR EACH TAB
+    const [perPage, setPerPage] = useState({'PIZZA': 5, 'STEAK': 5, 'ALL': 5})
     const [currentTab, setCurrentTab] = useState('PIZZA')
     const [sortBy, setSortBy] = useState('ByNameAsc')
 
@@ -26,20 +27,43 @@ const MainTable = () => {
 
     const displayBeer = (pg, perPG) => {
         switch(currentTab) {
+            // I`M USING SWITCH JUST CAUSE DIDN`T GET HOW TO USE DYNAMIC ACTION NAMES.
             case 'PIZZA':
-                dispatch(getPizzaBeer(pg[currentTab], perPG))
+                dispatch(getPizzaBeer(pg[currentTab], perPG[currentTab]))
                 break
             case 'STEAK':
-                dispatch(getSteakBeer(pg[currentTab], perPG))
+                dispatch(getSteakBeer(pg[currentTab], perPG[currentTab]))
                 break
             case 'ALL':
-                dispatch(getBeers(pg[currentTab], perPG))
+                dispatch(getBeers(pg[currentTab], perPG[currentTab]))
                 break
             default: 
-                dispatch(getPizzaBeer(pg[currentTab], perPG))
+                dispatch(getPizzaBeer(pg[currentTab], perPG[currentTab]))
         }
     }
 
+    const clkHandler = (key) => {
+        switch (+key) {
+            // SAME IS HERE, DUNNO HOW TO GET AMOUNT OF TABS FOR LOOPING IT + DYNAMIC ACTION NAMES
+            case 1: 
+                setCurrentTab('PIZZA')
+                dispatch( getPizzaBeer(page[currentTab], perPage[currentTab]))
+                break;
+            case 2: 
+                setCurrentTab('STEAK')
+                dispatch(getSteakBeer(page[currentTab], perPage[currentTab]))
+                break;
+            case 3:
+                setCurrentTab('ALL')
+                dispatch(getBeers(page[currentTab], perPage[currentTab]))
+                break;
+            default: 
+                setCurrentTab('PIZZA')
+                dispatch(getPizzaBeer(page[currentTab], perPage[currentTab]))
+            }
+        }
+        
+    // DYNAMIC NEXT PAGE SETTING
     const incrementHandler = () => {
         tabs.map(item => {
             if (item.tab === currentTab) {
@@ -50,28 +74,8 @@ const MainTable = () => {
             }
         })
     }
- 
-    
-    const clkHandler = (key) => {
-        switch (+key) {
-            case 1: 
-                setCurrentTab('PIZZA')
-                dispatch( getPizzaBeer(page['PIZZA'], perPage))
-                break;
-            case 2: 
-                setCurrentTab('STEAK')
-                dispatch(getSteakBeer(page['STEAK'], perPage))
-                break;
-            case 3:
-                setCurrentTab('ALL')
-                dispatch(getBeers(page['ALL'], perPage))
-                break;
-            default: 
-                setCurrentTab('PIZZA')
-                dispatch(getPizzaBeer(page['PIZZA'], perPage))
-        }
-    }
 
+    //DYNAMIC PREV PAGE SETTING
     const decrementHandler = () => {
         tabs.map(item => {
             if (item.tab === currentTab) {
@@ -82,11 +86,16 @@ const MainTable = () => {
             }
         })
     }
-
+    
+    // SET AMOUNT OF PER PAGE ITEMS
     const perPageSelector = e => {
-        setPerPage(e.target.value)
+        setPerPage(prev => ({
+            ...prev,
+            [currentTab]: e.target.value
+        }))
     }
 
+    // SET SORTING VALUE
     const sortingBy = value => {
         setSortBy(value)
     }
@@ -97,24 +106,23 @@ const MainTable = () => {
     }, [page, perPage])
 
 
-
-
-
     return (
         <div className='main-wrapper'>
             <div  className='per-page-nav'>
                 <div>Per page: </div>
                 <CustomRadio 
                     onChangeHandler={perPageSelector} 
-                    value={perPage} 
+                    value={perPage[currentTab]} 
                     disabled={isLoading}
                 />
                 <div>Sort by:</div>
-                <CustomSelector
+                <CustomSelect
                     disabled={isLoading} 
                     sortingBy={sortingBy}
                 />   
             </div>
+
+            {/* SOME BULLSHIT, WILL MAKE A DIFF COMPONENT FOR THIS NOT LACONIC CODE */}
             <Tabs 
                 defaultActiveKey="1" 
                 onTabClick={key => clkHandler( key)}
@@ -125,8 +133,8 @@ const MainTable = () => {
                         sortParam={sortBy}
                         loading={isLoading}
                         beers={pizza}
-                        perPage={perPage}
-                        currentPage={page['PIZZA']}
+                        perPage={perPage[currentTab]}
+                        currentPage={page[currentTab]}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
@@ -137,8 +145,8 @@ const MainTable = () => {
                         sortParam={sortBy}
                         loading={isLoading}
                         beers={steak}
-                        perPage={perPage}
-                        currentPage={page['STEAK']}
+                        perPage={perPage[currentTab]}
+                        currentPage={page[currentTab]}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
@@ -149,8 +157,8 @@ const MainTable = () => {
                         sortParam={sortBy}
                         loading={isLoading} 
                         beers={beers}
-                        perPage={perPage}
-                        currentPage={page['ALL']}
+                        perPage={perPage[currentTab]}
+                        currentPage={page[currentTab]}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />

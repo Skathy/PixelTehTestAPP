@@ -2,6 +2,7 @@ import React from 'react'
 import { Radio } from 'antd';
 
 export const CustomRadio = ({onChangeHandler, value, disabled}) => {
+    // SOME PRIVATE LOGIC  (I GUESS..)
     const options = [
         {label: '5',  value: 5},
         {label: '10',  value: 10},

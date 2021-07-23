@@ -3,7 +3,7 @@ import { Select } from 'antd'
 
 const { Option } = Select;
 
-export default function CustomSelector({sortingBy, disabled}) {
+export const  CustomSelect = ({sortingBy, disabled}) => {
     return (
         <div>
             <Select defaultValue="ByNameAsc" onChange={value => sortingBy(value)} disabled={disabled}>

@@ -1,3 +1,5 @@
+// THERE IS A SORTING LOGIC!
+
 const sortByNameAsc = (a, b) => {
     if (a.name > b.name) {
         return 1
@@ -27,6 +29,7 @@ const sortByAbvDesc = (a, b) => {
     }
 }
 
+// SWITCH CASE JUST CAUSE DUNNO HOW TO GET DYNAMIC FUNC NAMES.
 export const sorting = sortBy => {
     switch(sortBy) {
         case 'ByNameAsc':
