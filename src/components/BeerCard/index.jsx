@@ -15,6 +15,9 @@ export const BeerCard = () => {
         dispatch(GetSingleBeer(id))
     }, [])
 
+
+    
+    // I DUNNO.. MAYBE THERE IS MORE EASIER WAY TO DO THAT, BUT.. YEAH, THERE 100% SHOULD BE EASIER WAY... 
     const openText = (e) => {
         console.log(e.target.innerHTML.split(' ')[0])
         if (e.target.innerHTML.split(' ')[0] === 'Description:') {
