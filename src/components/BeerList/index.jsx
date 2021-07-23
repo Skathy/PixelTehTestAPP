@@ -12,6 +12,7 @@ export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, cu
                 {loading ? <Loader /> : beers.length ? beers
                     .sort(sorting(sortParam)) 
                     .map(item => (
+                        // OPEN BEER CARD BY ON BEER CLICK
                         <Link to={() => path(item.id)}>
                             <div className='beer' key={item.id}>
                                 <div>

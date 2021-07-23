@@ -1,0 +1,52 @@
+.card-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    width: 15rem;
+    a {
+        color: #000;
+        text-decoration: none;
+        border: .1rem solid #d9d9d9;
+        border-radius: 0.1rem;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        width: 100%;
+        &:hover {
+            color: #1890ff;
+            border: 0.1rem solid #1890ff;
+            border-radius: 0.1rem;
+        }
+        .link-btn {
+            padding: .5rem 1rem;
+        }
+    }
+    .card-header {
+        height: 100%;
+        img {
+            width: 7rem;
+            height: 14rem;
+        }
+        .beer-name{
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+    }
+    .card-body {
+        text-align: start;
+        width: 100%;
+        span {
+            cursor: pointer;
+        }
+        .collapsed {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .collapsed {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+    }
+}
