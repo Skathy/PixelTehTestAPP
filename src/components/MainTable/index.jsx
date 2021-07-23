@@ -2,14 +2,12 @@ import {React, useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {getBeers, getPizzaBeer, getSteakBeer} from '../../store/beers/actions'
 import { sorting } from './sorting'
-import { BeerList } from '../BeerList'
 import { CustomRadio } from '../CustomRadio'
 import { CustomSelect } from '../CustomSelect';
-import { Tabs } from 'antd'
 import 'antd/dist/antd.css'
 import './style.scss'
+import { TabList } from '../TabList'
 
-const { TabPane } = Tabs;
 
 const MainTable = () => {
     const dispatch = useDispatch()
@@ -20,7 +18,7 @@ const MainTable = () => {
     const [currentTab, setCurrentTab] = useState('PIZZA')
     const [sortBy, setSortBy] = useState('ByNameAsc')
 
-    const { pizza, steak, beers, isLoading } = useSelector(state => state.beerReducer)
+    const { isLoading } = useSelector(state => state.beerReducer)
 
     const tabs = [{tab: 'PIZZA'},{tab: 'STEAK'},{tab: 'ALL'}]
 
@@ -64,7 +62,7 @@ const MainTable = () => {
         }
         
     // DYNAMIC NEXT PAGE SETTING
-    const incrementHandler = () => {
+    const nextPage = () => {
         tabs.map(item => {
             if (item.tab === currentTab) {
                 setPage(prev => ({
@@ -76,7 +74,7 @@ const MainTable = () => {
     }
 
     //DYNAMIC PREV PAGE SETTING
-    const decrementHandler = () => {
+    const prevPage = () => {
         tabs.map(item => {
             if (item.tab === currentTab) {
                 setPage(prev => ({
@@ -121,49 +119,16 @@ const MainTable = () => {
                     sortingBy={sortingBy}
                 />   
             </div>
-
-            {/* SOME BULLSHIT, WILL MAKE A DIFF COMPONENT FOR THIS NOT LACONIC CODE */}
-            <Tabs 
-                defaultActiveKey="1" 
-                onTabClick={key => clkHandler( key)}
-            >
-                <TabPane tab="Pizza" key="1" disabled={isLoading}>
-                    <BeerList 
-                        sorting={sorting}
-                        sortParam={sortBy}
-                        loading={isLoading}
-                        beers={pizza}
-                        perPage={perPage[currentTab]}
-                        currentPage={page[currentTab]}
-                        incrementHandler={incrementHandler}
-                        decrementHandler={decrementHandler}
-                        />
-                </TabPane>
-                <TabPane tab="Steak" key="2" disabled={isLoading}>
-                    <BeerList
-                        sorting={sorting}
-                        sortParam={sortBy}
-                        loading={isLoading}
-                        beers={steak}
-                        perPage={perPage[currentTab]}
-                        currentPage={page[currentTab]}
-                        incrementHandler={incrementHandler}
-                        decrementHandler={decrementHandler}
-                        />
-                </TabPane>
-                <TabPane tab="ALL" key="3" disabled={isLoading}>
-                    <BeerList
-                        sorting={sorting}
-                        sortParam={sortBy}
-                        loading={isLoading} 
-                        beers={beers}
-                        perPage={perPage[currentTab]}
-                        currentPage={page[currentTab]}
-                        incrementHandler={incrementHandler}
-                        decrementHandler={decrementHandler}
-                        />
-                </TabPane>
-            </Tabs>
+            <TabList
+                clkHandler={clkHandler}
+                sorting={sorting}
+                sortBy={sortBy}
+                page={page}
+                perPage={perPage}
+                currentTab={currentTab}
+                nextPage={nextPage}
+                prevPage={prevPage}
+            />
         </div>
     )
 }
