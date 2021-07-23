@@ -7,7 +7,7 @@ export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, cu
     return (
         <div className='beer-list-wrapper'>
             <div className='beer-list'>
-                {loading ? <Loader /> : beers
+                {loading ? <Loader /> : beers.length ? beers
                     .sort(sorting(sortParam))
                     .map(item => (
                 <div className='beer' key={item.id}>
@@ -18,7 +18,7 @@ export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, cu
                         <span>{item.name}</span>
                         <span>ABV: {item.abv}</span>
                     </div>
-                </div>))}
+                </div>)) : null}
             </div>
             <div className="pagination-wrapper">
                 <CustomButton 

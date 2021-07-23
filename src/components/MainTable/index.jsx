@@ -14,60 +14,73 @@ const { TabPane } = Tabs;
 const MainTable = () => {
     const dispatch = useDispatch()
 
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState({'PIZZA': 1, 'STEAK': 1, 'ALL': 1})
     const [perPage, setPerPage] = useState(5)
     const [currentTab, setCurrentTab] = useState('PIZZA')
     const [sortBy, setSortBy] = useState('ByNameAsc')
 
     const { pizza, steak, beers, isLoading } = useSelector(state => state.beerReducer)
 
+    const tabs = [{tab: 'PIZZA'},{tab: 'STEAK'},{tab: 'ALL'}]
+
 
     const displayBeer = (pg, perPG) => {
         switch(currentTab) {
             case 'PIZZA':
-                dispatch(getPizzaBeer(pg, perPG))
+                dispatch(getPizzaBeer(pg[currentTab], perPG))
                 break
             case 'STEAK':
-                dispatch(getSteakBeer(pg, perPG))
+                dispatch(getSteakBeer(pg[currentTab], perPG))
                 break
             case 'ALL':
-                dispatch(getBeers(pg, perPG))
+                dispatch(getBeers(pg[currentTab], perPG))
                 break
             default: 
-                dispatch(getPizzaBeer(pg, perPG))
-        }   
+                dispatch(getPizzaBeer(pg[currentTab], perPG))
+        }
     }
 
     const incrementHandler = () => {
-        setPage(prev => prev+1)
+        tabs.map(item => {
+            if (item.tab === currentTab) {
+                setPage(prev => ({
+                    ...prev,
+                    [currentTab]: page[currentTab] + 1
+                }))
+            }
+        })
     }
+ 
     
     const clkHandler = (key) => {
         switch (+key) {
             case 1: 
                 setCurrentTab('PIZZA')
-                setPage(1)
-                dispatch(getPizzaBeer(page, perPage))
+                dispatch( getPizzaBeer(page['PIZZA'], perPage))
                 break;
             case 2: 
                 setCurrentTab('STEAK')
-                setPage(1)
-                dispatch(getSteakBeer(page, perPage))
+                dispatch(getSteakBeer(page['STEAK'], perPage))
                 break;
             case 3:
                 setCurrentTab('ALL')
-                setPage(1)
-                dispatch(getBeers(page, perPage))
+                dispatch(getBeers(page['ALL'], perPage))
                 break;
             default: 
                 setCurrentTab('PIZZA')
-                setPage(1)
-                dispatch(getPizzaBeer(page, perPage))
-        }   
+                dispatch(getPizzaBeer(page['PIZZA'], perPage))
+        }
     }
 
     const decrementHandler = () => {
-        setPage(prev => prev - 1)
+        tabs.map(item => {
+            if (item.tab === currentTab) {
+                setPage(prev => ({
+                    ...prev,
+                    [currentTab]: page[currentTab] - 1
+                }))
+            }
+        })
     }
 
     const perPageSelector = e => {
@@ -113,7 +126,7 @@ const MainTable = () => {
                         loading={isLoading}
                         beers={pizza}
                         perPage={perPage}
-                        currentPage={page}
+                        currentPage={page['PIZZA']}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
@@ -125,7 +138,7 @@ const MainTable = () => {
                         loading={isLoading}
                         beers={steak}
                         perPage={perPage}
-                        currentPage={page}
+                        currentPage={page['STEAK']}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
@@ -137,7 +150,7 @@ const MainTable = () => {
                         loading={isLoading} 
                         beers={beers}
                         perPage={perPage}
-                        currentPage={page}
+                        currentPage={page['ALL']}
                         incrementHandler={incrementHandler}
                         decrementHandler={decrementHandler}
                         />
