@@ -19,32 +19,9 @@ export const BeerCard = () => {
     
     // I DUNNO.. MAYBE THERE IS MORE EASIER WAY TO DO THAT, BUT.. YEAH, THERE 100% SHOULD BE EASIER WAY... 
     const openText = (e) => {
-        console.log(e.target.innerHTML.split(' ')[0])
-        if (e.target.innerHTML.split(' ')[0] === 'Description:') {
-            if (collapse['description'] === 'collapsed') {
-                setCollapse(prev => ({
-                    ...prev,
-                    ['description']: ''
-                }))
-            } else {
-                setCollapse(prev => ({
-                    ...prev,
-                    ['description']: 'collapsed'
-                }))
-            }
-        } else {
-            if (collapse['food_pairing'] === 'collapsed') {
-                setCollapse(prev => ({
-                    ...prev,
-                    ['food_pairing']: ''
-                })) 
-            } else {
-                setCollapse(prev => ({
-                    ...prev,
-                    ['food_pairing']: 'collapsed'
-                }))
-            }
-        }
+        e.target.innerHTML.split(' ')[0] === 'Description' ? 
+            collapse['description'] === 'collapsed' ? setCollapse(prev => ({...prev, ['description'] : ''})) : setCollapse(prev => ({...prev, ['description'] : 'collapsed'}))
+        : collapse['food_pairing'] === 'collapsed' ? setCollapse(prev => ({...prev, ['food_pairing']: ''})) : setCollapse(prev => ({...prev, ['food_pairing']: 'collapsed'}))
     }
     
 
