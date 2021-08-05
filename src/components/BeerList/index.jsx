@@ -11,9 +11,9 @@ export const BeerList = ({beers, incrementHandler, decrementHandler, perPage, cu
                 {/* RENDERING LIST OF BEERS IF LOADING FALSE OR LENGTH OF BEERS ARR > 0 */}
                 {loading ? <Loader /> : beers.length ? beers
                     .sort(sorting(sortParam)) 
-                    .map(item => (
+                    .map((item,index) => (
                         // OPEN BEER CARD BY ON BEER CLICK
-                        <Link to={() => path(item.id)}>
+                        <Link key={index} to={() => path(item.id)}>
                             <div className='beer' key={item.id}>
                                 <div>
                                     <img src={item.image_url} alt={item.id} />

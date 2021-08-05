@@ -20,51 +20,30 @@ const MainTable = () => {
 
     const { isLoading } = useSelector(state => state.beerReducer)
 
-    const tabs = [{tab: 'PIZZA'},{tab: 'STEAK'},{tab: 'ALL'}]
+    // const tabs = [{tab: 'PIZZA'},{tab: 'STEAK'},{tab: 'ALL'}] 
+    const tabs = { 1: 'PIZZA', 2: 'STEAK', 3: 'ALL'}
+    // const tabs = ['PIZZA','STEAK','ALL'] 
 
+    const dispatches = {
+        'PIZZA': () => {dispatch(getPizzaBeer(page[currentTab], perPage[currentTab]))},
+        'STEAK': () => {dispatch(getSteakBeer(page[currentTab], perPage[currentTab]))},
+        'ALL': () => {dispatch(getBeers(page[currentTab], perPage[currentTab]))}
+    }
 
-    const displayBeer = (pg, perPG) => {
-        switch(currentTab) {
-            // I`M USING SWITCH JUST CAUSE DIDN'T GET HOW TO USE DYNAMIC ACTION NAMES.
-            case 'PIZZA':
-                dispatch(getPizzaBeer(pg[currentTab], perPG[currentTab]))
-                break
-            case 'STEAK':
-                dispatch(getSteakBeer(pg[currentTab], perPG[currentTab]))
-                break
-            case 'ALL':
-                dispatch(getBeers(pg[currentTab], perPG[currentTab]))
-                break
-            default: 
-                dispatch(getPizzaBeer(pg[currentTab], perPG[currentTab]))
-        }
+    const newDisplayBeer = (tab) => {
+        return dispatches[tab]()
     }
 
     const clkHandler = (key) => {
-        switch (+key) {
-            // SAME IS HERE, DUNNO HOW TO GET AMOUNT OF TABS FOR LOOPING IT + DYNAMIC ACTION NAMES
-            case 1: 
-                setCurrentTab('PIZZA')
-                dispatch( getPizzaBeer(page[currentTab], perPage[currentTab]))
-                break;
-            case 2: 
-                setCurrentTab('STEAK')
-                dispatch(getSteakBeer(page[currentTab], perPage[currentTab]))
-                break;
-            case 3:
-                setCurrentTab('ALL')
-                dispatch(getBeers(page[currentTab], perPage[currentTab]))
-                break;
-            default: 
-                setCurrentTab('PIZZA')
-                dispatch(getPizzaBeer(page[currentTab], perPage[currentTab]))
-            }
-        }
+        setCurrentTab(tabs[key])
+    }
         
     // DYNAMIC NEXT PAGE SETTING
     const nextPage = () => {
-        tabs.map(item => {
-            if (item.tab === currentTab) {
+        console.log(Object.values(tabs))
+        Object.values(tabs).map(item => {
+            console.log(item)
+            if (item === currentTab) {
                 setPage(prev => ({
                     ...prev,
                     [currentTab]: page[currentTab] + 1
@@ -75,8 +54,8 @@ const MainTable = () => {
 
     //DYNAMIC PREV PAGE SETTING
     const prevPage = () => {
-        tabs.map(item => {
-            if (item.tab === currentTab) {
+        Object.values(tabs).map(item => {
+            if (item === currentTab) {
                 setPage(prev => ({
                     ...prev,
                     [currentTab]: page[currentTab] - 1
@@ -104,8 +83,8 @@ const MainTable = () => {
 
 
     useEffect(() => {
-        displayBeer(page, perPage)
-    }, [page, perPage])
+        newDisplayBeer(currentTab)
+    }, [page, perPage, currentTab])
 
 
     return (

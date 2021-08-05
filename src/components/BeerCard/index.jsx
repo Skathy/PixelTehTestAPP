@@ -18,7 +18,7 @@ export const BeerCard = () => {
 
     
     // I DUNNO.. MAYBE THERE IS MORE EASIER WAY TO DO THAT, BUT.. YEAH, THERE 100% SHOULD BE EASIER WAY... 
-    const openText = (e) => {
+    const toggleText = (e) => {
         e.target.innerHTML.split(' ')[0] === 'Description' ? 
             collapse['description'] === 'collapsed' ? setCollapse(prev => ({...prev, ['description'] : ''})) : setCollapse(prev => ({...prev, ['description'] : 'collapsed'}))
         : collapse['food_pairing'] === 'collapsed' ? setCollapse(prev => ({...prev, ['food_pairing']: ''})) : setCollapse(prev => ({...prev, ['food_pairing']: 'collapsed'}))
@@ -38,10 +38,10 @@ export const BeerCard = () => {
                     <div className="card-body">
                         <div>Tagline: {beer.tagline}</div>
                         <div>ABV: {beer.abv}</div>
-                        <div className={collapse['description']} onClick={e => openText(e)}>
+                        <div className={collapse['description']} onClick={e => toggleText(e)}>
                             <span>Description: {beer.description}</span>
                         </div>
-                        <div className={collapse['food_pairing']} onClick={e => openText(e)}>
+                        <div className={collapse['food_pairing']} onClick={e => toggleText(e)}>
                             <span>Food pairing: {beer.food_pairing ? beer.food_pairing.join(',') : null}</span>
                         </div>
                     </div>
