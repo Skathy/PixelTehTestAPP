@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import MainTable from './components/MainTable/index';
-import {BeerCard} from './components/BeerCard'
+import { BeerCard } from './components/BeerCard'
 
 function App() {
   return (
