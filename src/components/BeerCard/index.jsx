@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react'
+import { React, useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { GetSingleBeer } from './../../store/beers/actions'
@@ -9,21 +9,19 @@ export const BeerCard = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
     const { beer, isLoading } = useSelector(state => state.beerReducer)
-
+    
     const [toggle, setToggle] =  useState({'description' : true, 'food': true})
     const collapseStatus = {true: 'collapsed', false: ''}
+
 
     useEffect(() => {
         dispatch(GetSingleBeer(id))
     }, [])
 
 
-
     const toggleText = e => {
-        setToggle(prev => (
-            {...prev, [e.target.innerText.split(' ')[0].toLowerCase().match('[a-zA-Z]+').join('')]: 
-                !prev[e.target.innerText.split(' ')[0].toLowerCase().match('[a-zA-Z]+').join('')]
-            }))
+        const text = e.target.innerText.split(' ')[0].toLowerCase().match('[a-zA-Z]+').join('')
+        setToggle(prev => ({...prev, [text]: !prev[text]}))
     }
     
 
