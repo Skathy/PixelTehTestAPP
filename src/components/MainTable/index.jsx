@@ -11,26 +11,23 @@ import './style.scss'
 
 const MainTable = () => {
     const dispatch = useDispatch()
+    const [currentTab, setCurrentTab] = useState('PIZZA')
+    const [sortBy, setSortBy] = useState('ByNameAsc')
     // SETTING PAGE FOR EACH TAB
     const [page, setPage] = useState({'PIZZA': 1, 'STEAK': 1, 'ALL': 1})
     // SETTING PER PAGE RENDER FOR EACH TAB
     const [perPage, setPerPage] = useState({'PIZZA': 5, 'STEAK': 5, 'ALL': 5})
-    const [currentTab, setCurrentTab] = useState('PIZZA')
-    const [sortBy, setSortBy] = useState('ByNameAsc')
 
     const { isLoading } = useSelector(state => state.beerReducer)
 
-    // const tabs = [{tab: 'PIZZA'},{tab: 'STEAK'},{tab: 'ALL'}] 
     const tabs = { 1: 'PIZZA', 2: 'STEAK', 3: 'ALL'}
-    // const tabs = ['PIZZA','STEAK','ALL'] 
-
     const dispatches = {
         'PIZZA': () => {dispatch(getPizzaBeer(page[currentTab], perPage[currentTab]))},
         'STEAK': () => {dispatch(getSteakBeer(page[currentTab], perPage[currentTab]))},
         'ALL': () => {dispatch(getBeers(page[currentTab], perPage[currentTab]))}
     }
 
-    const newDisplayBeer = (tab) => {
+    const displayBeer = (tab) => {
         return dispatches[tab]()
     }
 
@@ -40,9 +37,7 @@ const MainTable = () => {
         
     // DYNAMIC NEXT PAGE SETTING
     const nextPage = () => {
-        console.log(Object.values(tabs))
         Object.values(tabs).map(item => {
-            console.log(item)
             if (item === currentTab) {
                 setPage(prev => ({
                     ...prev,
@@ -83,7 +78,7 @@ const MainTable = () => {
 
 
     useEffect(() => {
-        newDisplayBeer(currentTab)
+        displayBeer(currentTab)
     }, [page, perPage, currentTab])
 
 

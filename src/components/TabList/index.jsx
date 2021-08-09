@@ -8,7 +8,7 @@ export const TabList = ({clkHandler, sorting, sortBy, currentTab, page, perPage,
     const { TabPane } = Tabs;
     const { beerReducer } = useSelector(state => state)
     
-    const tabs = {[0]: 'PIZZA', [1]: 'STEAK', [2]: 'ALL'}
+    const tabs = {0: 'PIZZA', 1: 'STEAK', 2: 'ALL'}
 
     return (
         <Tabs 

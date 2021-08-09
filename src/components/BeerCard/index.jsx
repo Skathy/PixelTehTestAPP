@@ -9,19 +9,22 @@ export const BeerCard = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
     const { beer, isLoading } = useSelector(state => state.beerReducer)
-    const [collapse, setCollapse] = useState({['description']: 'collapsed', ['food_pairing']: 'collapsed'})
+    // const [collapse, setCollapse] = useState({true: 'collapsed', false: ''})
+
+    const [toggle, setToggle] =  useState({'description' : true, 'food': true})
+    const collapseStatus = {true: 'collapsed', false: ''}
 
     useEffect(() => {
         dispatch(GetSingleBeer(id))
     }, [])
 
 
-    
-    // I DUNNO.. MAYBE THERE IS MORE EASIER WAY TO DO THAT, BUT.. YEAH, THERE 100% SHOULD BE EASIER WAY... 
-    const toggleText = (e) => {
-        e.target.innerHTML.split(' ')[0] === 'Description' ? 
-            collapse['description'] === 'collapsed' ? setCollapse(prev => ({...prev, ['description'] : ''})) : setCollapse(prev => ({...prev, ['description'] : 'collapsed'}))
-        : collapse['food_pairing'] === 'collapsed' ? setCollapse(prev => ({...prev, ['food_pairing']: ''})) : setCollapse(prev => ({...prev, ['food_pairing']: 'collapsed'}))
+
+    const toggleText = e => {
+        setToggle(prev => (
+            {...prev, [e.target.innerText.split(' ')[0].toLowerCase().match('[a-zA-Z]+').join('')]: 
+                !prev[e.target.innerText.split(' ')[0].toLowerCase().match('[a-zA-Z]+').join('')]
+            }))
     }
     
 
@@ -36,13 +39,13 @@ export const BeerCard = () => {
                         </div>
                     </div>
                     <div className="card-body">
-                        <div>Tagline: {beer.tagline}</div>
-                        <div>ABV: {beer.abv}</div>
-                        <div className={collapse['description']} onClick={e => toggleText(e)}>
-                            <span>Description: {beer.description}</span>
+                        <div><b>Tagline:</b> {beer.tagline}</div>
+                        <div><b>ABV:</b> {beer.abv}</div>
+                        <div className={collapseStatus[toggle['description']]} onClick={e => toggleText(e)}>
+                            <span><b>Description:</b> {beer.description}</span>
                         </div>
-                        <div className={collapse['food_pairing']} onClick={e => toggleText(e)}>
-                            <span>Food pairing: {beer.food_pairing ? beer.food_pairing.join(',') : null}</span>
+                        <div className={collapseStatus[toggle['food']]} onClick={e => toggleText(e)}>
+                            <span><b>Food pairing:</b> {beer.food_pairing ? beer.food_pairing.join(',') : null}</span>
                         </div>
                     </div>
                     <Link to='/'>
