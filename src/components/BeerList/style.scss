@@ -1,3 +1,6 @@
+@import '../../assets/colors.scss';
+
+
 .beer-list-wrapper {
     .beer-list {
         min-width: 18.75rem;
@@ -18,13 +21,13 @@
             width: .9rem;
         }
         .beer {
-            COLOR: #000;
-            border-bottom: .1rem solid #d9d9d9;
+            color: $black;
+            border-bottom: .1rem solid $border-color;
             padding: 0.5rem;
             transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             &:hover {
-                border-bottom: 0.1rem solid #1890ff;
-                color: #40a9ff;
+                border-bottom: 0.1rem solid $hover-blue;
+                color: $hover-blue;
                 cursor: pointer;
             }
             .beer-desc {

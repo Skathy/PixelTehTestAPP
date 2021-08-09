@@ -9,7 +9,6 @@ export const BeerCard = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
     const { beer, isLoading } = useSelector(state => state.beerReducer)
-    // const [collapse, setCollapse] = useState({true: 'collapsed', false: ''})
 
     const [toggle, setToggle] =  useState({'description' : true, 'food': true})
     const collapseStatus = {true: 'collapsed', false: ''}
